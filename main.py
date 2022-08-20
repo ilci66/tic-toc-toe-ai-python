@@ -23,12 +23,15 @@ def choose_letter():
 
 # TODO: randomly decide who goes first
 def who_goes_first():
-    pass
-
+    if random.randint(0, 1) == 0:
+        return 'computer'
+    else:
+        return 'player'
 
 # TODO: ask if they wanna go again, use input
 def play_again():
-    pass
+    print('Wanna play again ?')
+    return input().lower().startswith('y')
 
 
 # TODO: place the letter on the board
@@ -37,23 +40,48 @@ def place_letter():
 
 
 # TODO: check if the space on the board is empty
-def is_free():
-    pass
+def is_free(board, space):
+    return board[space] == ' '
 
 
 # TODO: check if there is a winner
-def is_win():
-    pass
+def is_win(board, letter):
+    result = False
+
+    # Check diagonal
+    if board[0] == board[4] == board[8] == letter \
+            or board[2] == board[4] == board[6] == letter:
+        result = True
+
+    # Check horizontal
+    for i in range(0, 9, 3):
+        if board[i] == board[i+1] == board[i+2] == letter:
+            result = True
+
+    # Check vertical
+    for i in range(0, 3):
+        if board[i] == board[i+3] == board[i+6] == letter:
+            result = True
+
+    return result
 
 
 # TODO: copy the board and return the copy
-def copy_board():
-    pass
+def copy_board(board):
+    copy = []
+    for i in board:
+        copy.append(i)
+    return copy
 
 
 # TODO: get the player move and register its legitimacy
-def get_player_move():
-    pass
+def get_player_move(board):
+    nums = '1 2 3 4 5 6 7 8 9'.split()
+    move = ' '
+    while move not in nums or not is_free(board, int(move)):
+        print('What is your next move* (1-9)')
+        move = input()
+    return int(move)
 
 
 # TODO: do a random move in a possible slot
@@ -70,8 +98,12 @@ def get_computer_move():
 
 
 # TODO: check if the board is full
-def is_board_full():
-    pass
+def is_board_full(board):
+
+    for i in range(9):
+        if is_free(board, i):
+            return False
+    return True
 
 
 # TODO: start the game
