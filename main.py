@@ -2,14 +2,24 @@ import random
 
 
 # TODO: draw the board in the console
-def draw_board():
-    pass
+def draw_board(board):
+    for i in range(0, 9, 3):
+        print("|", board[i], "--", board[i+1], "--", board[i+2], "|")
 
 
 # TODO: player chooses their letter, use input
 def choose_letter():
-    pass
+    letter = ""
+    while not (letter == "X" or letter == "O"):
+        print("Pick your letter, X or O ?")
+        letter = input().upper()
 
+    if letter == "X":
+        return ["X", "O"]
+    elif letter == "O":
+        return ["O", "X"]
+    else:
+        return False
 
 # TODO: randomly decide who goes first
 def who_goes_first():
@@ -70,5 +80,5 @@ def start_game():
 
 
 if __name__ == '__main__':
-    print('Works !!!')
-
+    # print('Works !!!')
+    draw_board('a b c d e f g h j'.split())
