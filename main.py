@@ -38,11 +38,14 @@ def play_again():
 
 # TODO: place the letter on the board
 def place_letter(board, letter, move):
-    board[move] = letter
+    board[move-1] = letter
 
 
 # TODO: check if the space on the board is empty
 def is_free(board, space):
+    if board[space] != ' ':
+        print(space, " is NOT free")
+
     return board[space] == ' '
 
 
@@ -80,7 +83,7 @@ def copy_board(board):
 def get_player_move(board):
     nums = '1 2 3 4 5 6 7 8 9'.split()
     move = ' '
-    while move not in nums or not is_free(board, int(move)):
+    while move not in nums or not is_free(board, int(move)-1):
         print('What is your next move* (1-9)')
         move = input()
     return int(move)
@@ -142,10 +145,46 @@ def is_board_full(board):
 
 
 # TODO: start the game
-def start_game():
-    pass
+while True:
+    myBoard = [' '] * 10
+    playerLetter, computerLetter = choose_letter()
+    turn = who_goes_first()
+    print(turn + " goes first")
+    gamePlaying = True
 
+    while gamePlaying:
+        if turn == 'player':
+            draw_board(myBoard)
+            playerMove = get_player_move(myBoard)
+            place_letter(myBoard, playerLetter, playerMove)
 
-if __name__ == '__main__':
-    # print('Works !!!')
-    draw_board('a b c d e f g h j'.split())
+            if is_win(myBoard, playerLetter):
+                draw_board(myBoard)
+                print('Player wins !!!')
+                gamePlaying = False
+            else:
+                if is_board_full(myBoard):
+                    draw_board(myBoard)
+                    print('Board full, no winner !!!')
+                    break
+                else:
+                    turn = 'computer'
+
+        else:
+            move = get_computer_move(myBoard, computerLetter)
+            place_letter(myBoard, computerLetter, move)
+
+            if is_win(myBoard, computerLetter):
+                draw_board(myBoard)
+                print("Computer wins, noob !!!")
+                gamePlaying = False
+            else:
+                if is_board_full(myBoard):
+                    draw_board(myBoard)
+                    print('Board full, no winner !!!')
+                    gamePlaying = False
+                else:
+                    turn = 'player'
+
+    if not play_again():
+        break
